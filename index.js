@@ -2,6 +2,7 @@ const Express = require("express");
 const app = Express();
 const cors = require("cors");
 const morgan = require("morgan");
+
 const { Sequelize } = require("sequelize");
 
 const { port } = require("./config");
