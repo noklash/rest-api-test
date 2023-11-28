@@ -50,6 +50,28 @@ module.exports = {
         return this.model.findOne().where(query).exec();
 //TODO=> COMEBACK HERE
       },
+
+  updateUser: (query, updatedValue) => {
+    return this.model.updateOne(query, updatedValue);
+  },
+
+  findAllUsers: () => {
+    return this.model.find({}, function(err, result) {
+      if (err) {
+        console.log(err);
+      } else {
+        this.json(result)
+//TODO COME BACK HERE LATER
+      }
+    });
+  },
+
+    deleteUser: (id) => {
+    return this.model.findByIdAndDelete(id, function (err) {
+      if (err) console.log(err);
+      console.log("deleted successfully")
+    });
+  }
     
 }
 
