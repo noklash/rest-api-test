@@ -40,16 +40,50 @@ module.exports = {
       })
     }
 
+    // jwt.verify(token, jwtSecret, (err, user) => {
+    //   if (err) {
+    //     return res.status(403).json({
+    //       status: false,
+    //       error: 'Invalid access token provided, please login again.'
+    //     });
+    //   }
+
+    //   req.user = user; // Save the user object for further use
+    //   next();
+    // });
+//START
     jwt.verify(token, jwtSecret, (err, user) => {
       if (err) {
-        return res.status(403).json({
+        if (err.name === 'TokenExpiredError') {
+          return res.status(403).json({
+            status: false,
+            error: 'Token expired, please login again.'
+          });
+        } else if (err.name === 'JsonWebTokenError') {
+          return res.status(401).json({
+            status: false,
+            error: 'Invalid token format, please check your token.'
+          });
+        } else {
+          return res.status(403).json({
+            status: false,
+            error: 'error dey o'
+          });
+        }
+      }
+    
+      if (!user) {
+        return res.status(401).json({
           status: false,
-          error: 'Invalid access token provided, please login again.'
+          error: 'User information not found in the token.'
         });
       }
-
-      req.user = user; // Save the user object for further use
+    console.log(user)
+      req.user = user;
+      return user
       next();
     });
+//STOP
+
   }
 }

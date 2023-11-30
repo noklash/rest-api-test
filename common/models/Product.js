@@ -46,15 +46,16 @@ module.exports = {
       },
     
   findAllProducts: () => {
-        return this.model.find({}, function(err, result) {
-          if (err) {
-            console.log(err);
-          } else {
-            this.json(result)
-    //TODO COME BACK HERE LATER
-          }
-        });
+        return this.model.find({} );
       },
+  //     function(err, result) {
+  //       if (err) {
+  //         console.log(err);
+  //       } else {
+  //         this.json(result)
+  // //TODO COME BACK HERE LATER
+  //       }
+  //     }
     
   deleteProduct: (id) => {
         return this.model.findByIdAndDelete(id, function (err) {

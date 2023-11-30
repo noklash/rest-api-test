@@ -46,8 +46,8 @@ module.exports = {
         return this.model.create(user);
       },    
   
-  findUser: (query) => {
-        return this.model.findOne().where(query).exec();
+  findUser: async (query) => {
+        return await this.model.findById(query)
 //TODO=> COMEBACK HERE
       },
 
