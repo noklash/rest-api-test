@@ -9,6 +9,6 @@ module.exports = {
     productPriceUnits: {
       DOLLAR: 'dollar',
       EURO: 'euro',
-      INR: 'inr'
+      NAIRA: 'naira'
     }
   }

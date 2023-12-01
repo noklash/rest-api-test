@@ -47,7 +47,7 @@ module.exports = {
       },    
   
   findUser: async (query) => {
-        return await this.model.findById(query)
+        return await this.model.findOne().where(query).exec();
 //TODO=> COMEBACK HERE
       },
 

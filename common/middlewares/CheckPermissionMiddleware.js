@@ -1,17 +1,24 @@
 const UserModel = require("../models/User");
-const { user } = require("./IsAuthenticatedMiddleware")
+// const { user } = require("./IsAuthenticatedMiddleware")
 
 
 
 module.exports = {
-  has: (role) => {
+  has:  (role) => {
     return (req, res, next) => {
       const {
         user: { userId }
       } = req;
       // user: { userId}
-      // console.log(`id is : ${user}`)
-      UserModel.findUser("65662ac0c37ca380157c0e67").then((user) => {
+      //  console.log(UserModel.findUser({ id: userId}))
+
+      async function hashedUser(uId){
+        const user = await UserModel.findUser({ _id: uId})
+        console.log(user)
+        return user
+      }
+      hashedUser(userId).then((user) => {
+        // console.log(user)
         
         // IF user does not exist in our database, means something is fishy
         // THEN we will return forbidden error and ask user to login again

@@ -80,7 +80,6 @@ module.exports = {
       }
     console.log(user)
       req.user = user;
-      return user
       next();
     });
 //STOP
