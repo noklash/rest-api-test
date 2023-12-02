@@ -24,7 +24,7 @@ module.exports = {
       params: { productId },
     } = req;
 
-    ProductModel.findProduct({ id: productId })
+    ProductModel.findProduct({ _id: productId })
       .then((product) => {
         return res.status(200).json({
           status: true,
@@ -74,9 +74,9 @@ module.exports = {
       });
     }
 
-    ProductModel.updateProduct({ id: productId }, payload)
+    ProductModel.updateProduct({ _id: productId }, payload)
       .then(() => {
-        return ProductModel.findProduct({ id: productId });
+        return ProductModel.findProduct({ _id: productId });
       })
       .then((product) => {
         return res.status(200).json({
@@ -97,7 +97,7 @@ module.exports = {
       params: { productId },
     } = req;
 
-    ProductModel.deleteProduct({id: productId})
+    ProductModel.deleteProduct({_id: productId})
       .then((numberOfEntriesDeleted) => {
         return res.status(200).json({
           status: true,

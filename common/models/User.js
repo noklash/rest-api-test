@@ -56,21 +56,11 @@ module.exports = {
   },
 
   findAllUsers: () => {
-    return this.model.find({}, function(err, result) {
-      if (err) {
-        console.log(err);
-      } else {
-        this.json(result)
-//TODO COME BACK HERE LATER
-      }
-    });
+    return this.model.find({});
   },
 
     deleteUser: (id) => {
-    return this.model.findByIdAndDelete(id, function (err) {
-      if (err) console.log(err);
-      console.log("deleted successfully")
-    });
+    return this.model.findByIdAndDelete(id).then(console.log("user deleted successfully"));
   }
     
 }

@@ -58,45 +58,7 @@ module.exports = {
   //     }
     
   deleteProduct: (id) => {
-        return this.model.findByIdAndDelete(id, function (err) {
-          if (err) console.log(err);
-          console.log("deleted successfully")
-        });
+        return this.model.findByIdAndDelete(id).then(console.log("Item deleted"));
       }
     
 }
-
-
-// module.exports = {
-//   initialise: (sequelize) => {
-//     this.model = sequelize.define("product", ProductModel)
-//   },
-
-  // createProduct: (user) => {
-  //   return this.model.create(user);
-  // },
-
-  // findProduct: (query) => {
-  //   return this.model.findOne({
-  //     where: query,
-  //   });
-  // },
-
-//   updateProduct: (query, updatedValue) => {
-//     return this.model.update(updatedValue, {
-//       where: query,
-//     });
-//   },
-
-//   findAllProducts: (query) => {
-//     return this.model.findAll({
-//       where: query
-//     });
-//   },
-
-//   deleteProduct: (query) => {
-//     return this.model.destroy({
-//       where: query
-//     });
-//   }
-// }
