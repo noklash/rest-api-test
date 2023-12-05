@@ -20,10 +20,12 @@ async function connectTodb(){
 const AuthorizationRoutes = require("./authorization/routes");
 const UserRoutes = require("./users/routes");
 const ProductRoutes = require("./products/routes");
+const CartRoutes = require("./cart/routes")
 
 // Sequelize model imports
 const UserModel = require("./common/models/User");
 const ProductModel = require("./common/models/Product");
+const CartModel = require("./common/models/Cart");
 
 app.use(morgan("tiny"));
 app.use(cors());
@@ -36,6 +38,7 @@ app.use(Express.json());
 // Initialising the Model on sequelize
 UserModel.initialise(mongoose);
 ProductModel.initialise(mongoose);
+// CartModel.initialise(mongoose);
 
 // Syncing the models that are defined on sequelize with the tables that alredy exists
 // in the database. It creates models as tables that do not exist in the DB.
@@ -47,6 +50,7 @@ ProductModel.initialise(mongoose);
     app.use("/", AuthorizationRoutes);
     app.use("/user", UserRoutes);
     app.use("/product", ProductRoutes);
+    app.use("/cart", CartRoutes);
 
     app.listen(PORT, () => {
       console.log("Server Listening on PORT:", port);
