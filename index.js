@@ -13,9 +13,8 @@ async function connectTodb(){
   .then(() => console.log("CONNECTED TO DB"));
   
 }
-// const db = mongoose.Connection;
 
-// const db = connectTodb()
+
 // Express Routes Import
 const AuthorizationRoutes = require("./authorization/routes");
 const UserRoutes = require("./users/routes");
@@ -30,18 +29,15 @@ const CartModel = require("./common/models/Cart");
 app.use(morgan("tiny"));
 app.use(cors());
 
-// Middleware that parses the body payloads as JSON to be consumed next set
-// of middlewares and controllers.
 app.use(Express.json());
 
 
 // Initialising the Model on sequelize
 UserModel.initialise(mongoose);
 ProductModel.initialise(mongoose);
-// CartModel.initialise(mongoose);
+CartModel.initialise(mongoose);
 
-// Syncing the models that are defined on sequelize with the tables that alredy exists
-// in the database. It creates models as tables that do not exist in the DB.
+
 
   connectTodb().then(() => {
     console.log("Mongoose is  Initialised!!");
