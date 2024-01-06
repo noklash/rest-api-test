@@ -1,4 +1,4 @@
-const { roles } = require('../../config');
+const { roles, verified } = require('../../config');
 
 module.exports = {
   type: 'object',
@@ -25,7 +25,12 @@ module.exports = {
     role: {
       type: 'string',
       enum: Object.values(roles)
+    },
+    verified: {
+      type: 'boolean',
+      enum: Object.values(verified)
     }
+
   },
   required: [
     'username',

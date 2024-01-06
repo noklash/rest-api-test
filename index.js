@@ -35,7 +35,7 @@ app.use(Express.json());
 // Initialising the Model on sequelize
 UserModel.initialise(mongoose);
 ProductModel.initialise(mongoose);
-CartModel.initialise(mongoose);
+// CartModel.initialise(mongoose);
 
 
 

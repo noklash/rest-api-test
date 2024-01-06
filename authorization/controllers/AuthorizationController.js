@@ -1,5 +1,7 @@
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
+const Token = require("./../../common/models/Token")
+const { sendingMail } = require("./../../nodemailer/mailing")
 
 const UserModel = require("../../common/models/User");
 
@@ -31,38 +33,81 @@ const encryptPassword = (password) => {
 };
 
 module.exports = {
-  register: (req, res) => {
-    const payload = req.body;
+  // register: (req, res) => {
+  //   const payload = req.body;
 
-    let encryptedPassword = encryptPassword(payload.password);
-    let role = payload.role;
+  //   let encryptedPassword = encryptPassword(payload.password);
+  //   let role = payload.role;
 
-    if (!role) {
-      role = roles.USER;
+  //   if (!role) {
+  //     role = roles.USER;
+  //   }
+
+  //   UserModel.createUser(
+  //     Object.assign(payload, { password: encryptedPassword, role })
+  //   )
+  //     .then((user) => {
+  //       // Generating an AccessToken for the user, which will be
+  //       // required in every subsequent request.
+  //       const accessToken = generateAccessToken(payload.username, user.id);
+
+  //       return res.status(200).json({
+  //         status: true,
+  //         data: {
+  //           user: user.toJSON(),
+  //           token: accessToken,
+  //         },
+  //       });
+  //     })
+  //     .catch((err) => {
+  //       return res.status(500).json({
+  //         status: false,
+  //         error: err,
+  //       });
+  //     });
+  // },
+
+
+  register: async(req, res) => { 
+    try {
+      const {username, email, password, age, role, firstName, lastName, verified, token } = req.body;
+      let encryptedPassword = encryptPassword(password);
+      const data = {
+        username, email, password:encryptedPassword , age, role, firstName, lastName, verified, token
+      };
+      
+      const user = await UserModel.createUser(data);
+      console.log(`ID IS : ${ user._id}`)
+
+      if (user) {
+        let setToken = await Token.create({
+          owner: user._id,
+          token: crypto.randomBytes(16).toString("hex"),
+        });
+
+        setToken.save()
+
+        if (setToken) {
+          sendingMail({
+            from: "no-reply@example.com",
+          to: `${email}`,
+          subject: "Account Verification Link",
+          text: `Hello, ${username} Please verify your email by
+                clicking this link :
+                http://localhost:3000/verify-email/${user._id}/${setToken.token} `,
+
+          });
+
+        }else {
+          return res.status(400).send("token not created")
+        }
+          return res.status(201).send(user);
+      } else {
+        return res.status(409).send("Details are not correct");
+      }
+    } catch (error) {
+      console.log(error);
     }
-
-    UserModel.createUser(
-      Object.assign(payload, { password: encryptedPassword, role })
-    )
-      .then((user) => {
-        // Generating an AccessToken for the user, which will be
-        // required in every subsequent request.
-        const accessToken = generateAccessToken(payload.username, user.id);
-
-        return res.status(200).json({
-          status: true,
-          data: {
-            user: user.toJSON(),
-            token: accessToken,
-          },
-        });
-      })
-      .catch((err) => {
-        return res.status(500).json({
-          status: false,
-          error: err,
-        });
-      });
   },
 
   login: (req, res) => {

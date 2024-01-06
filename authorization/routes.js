@@ -1,5 +1,7 @@
 const router = require("express").Router();
 
+const {  verifyEmail, createUser } = require("../users/controllers/UserController")
+
 // Controller Imports
 const AuthorizationController = require("./controllers/AuthorizationController");
 
@@ -15,6 +17,8 @@ router.post(
   [SchemaValidationMiddleware.verify(registerPayload)],
   AuthorizationController.register
 );
+
+router.get('/verify-email/:id/:token', verifyEmail)
 
 router.post(
   "/login",

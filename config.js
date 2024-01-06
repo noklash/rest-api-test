@@ -10,5 +10,9 @@ module.exports = {
       DOLLAR: 'dollar',
       EURO: 'euro',
       NAIRA: 'naira'
+    },
+    verified: {
+      NOT: false,
+      IS: true
     }
   }
