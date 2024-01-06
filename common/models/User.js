@@ -29,7 +29,6 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    // required: true,
     defaults: roles.USER,
   },
   firstName: {
@@ -77,7 +76,7 @@ module.exports = {
     return this.model.find({});
   },
 
-    deleteUser: (id) => {
+  deleteUser: (id) => {
     return this.model.findByIdAndDelete(id).then(console.log("user deleted successfully"));
   }
     

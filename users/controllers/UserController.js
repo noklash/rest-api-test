@@ -6,7 +6,7 @@ const { sendingMail } = require("./../../nodemailer/mailing")
 module.exports = {
   createUser: async(req, res) => {
     try {
-      const {username, email, pasword, age, role, firstName, lastName, verified, token } = req.body;
+      const { username, email, pasword, age, role, firstName, lastName, verified, token } = req.body;
       const data = {
         username, email, pasword, age, role, firstName, lastName, verified, token
       };
@@ -33,7 +33,7 @@ module.exports = {
           });
 
         }else {
-          return res.status(400).send("token not created")
+          return res.status(400).send("token not created");
         }
           return res.status(201).send(user);
       } else {
@@ -59,7 +59,7 @@ module.exports = {
 
       if(!userToken){
         return res.status(400).send({
-          msg: "Your verification link may have expired. Please click on reasend"
+          msg: "Your verification link may have expired. Please click on resend"
         });
 
       } else {
@@ -76,10 +76,10 @@ module.exports = {
             .status(200)
             .send("User is verified already. Please login");
         } else {
-          const updated = awaitUser.update(
+          const updated = await User.update(
             { verified: true },
             {
-              ehere: {
+              where: {
                 id: userToken.userId,
               },
             }
@@ -91,7 +91,7 @@ module.exports = {
           } else {
             return res 
               .status(200)
-              .send("Your accout has been successfully verified");
+              .send("Your account has been successfully verified");
           }
         }
       }
