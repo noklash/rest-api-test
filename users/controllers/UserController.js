@@ -4,102 +4,87 @@ const crypto = require("crypto");
 const { sendingMail } = require("./../../nodemailer/mailing")
 
 module.exports = {
-  createUser: async(req, res) => {
+   createUser : async (req, res) => {
     try {
-      const { username, email, pasword, age, role, firstName, lastName, verified, token } = req.body;
+      const { username, email, password, age, role, firstName, lastName } = req.body;
+  
       const data = {
-        username, email, pasword, age, role, firstName, lastName, verified, token
+        username,
+        email,
+        password, // Corrected typo in the variable name
+        age,
+        role,
+        firstName,
+        lastName,
+        verified: false, // Set initial verification status to false
       };
-      
-      const user = UserModel.create(data);
-      
+  
+      const user = await UserModel.create(data);
+  
       if (user) {
-        let setToken = new Token({
-          userId: user._id,
+        const setToken = new Token({
+          userId: user._id, // Assuming _id is the correct property for the user ID
           token: crypto.randomBytes(16).toString("hex"),
         });
-
-        setToken.save()
-
+  
+        await setToken.save(); // Corrected to use async/await for save()
+  
         if (setToken) {
-          sendingMail({
+          await sendingMail({
             from: "no-reply@example.com",
-          to: `${email}`,
-          subject: "Account Verification Link",
-          text: `Hello, ${username} Please verify your email by
-                clicking this link :
-                http://localhost:3000/verify-email/${user.id}/${setToken.token} `,
-
+            to: email,
+            subject: "Account Verification Link",
+            text: `Hello, ${username} Please verify your email by clicking this link: http://localhost:3000/verify-email/${user._id}/${setToken.token}`,
           });
-
-        }else {
-          return res.status(400).send("token not created");
-        }
           return res.status(201).send(user);
+        } else {
+          return res.status(400).send("Token not created");
+        }
       } else {
         return res.status(409).send("Details are not correct");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      return res.status(500).send("Internal Server Error");
     }
   },
-
-   verifyEmail: async (req, res) => {
+  
+   verifyEmail : async (req, res) => {
     try {
       const token = req.params.token;
-
+  
       const userToken = await Token.findOne({
         token,
-        where: {
-          userId: req.params.id,
-        },
-      })
-
-      console.log(userToken);
-
-      if(!userToken){
+        userId: req.params.id, // Corrected the where condition
+      });
+  
+      if (!userToken) {
         return res.status(400).send({
-          msg: "Your verification link may have expired. Please click on resend"
+          msg: "Your verification link may have expired. Please click on resend",
         });
-
       } else {
-        const user = await UserModel.findOne({ where: { id: req.params.id } });
+        const user = await UserModel.findById(req.params.id); // Corrected to use findById
         if (!user) {
-          console.log(user);
-
           return res.status(401).send({
-            msg: "We were unable to find a user for this verification. Please signUp!",
+            msg: "We were unable to find a user for this verification. Please sign up!",
           });
-
         } else if (user.verified) {
-          return res
-            .status(200)
-            .send("User is verified already. Please login");
+          return res.status(200).send("User is verified already. Please login");
         } else {
-          const updated = await User.update(
+          await UserModel.findByIdAndUpdate(
+            userToken.userId,
             { verified: true },
-            {
-              where: {
-                id: userToken.userId,
-              },
-            }
+            { new: true }
           );
-          console.log(updated);
-
-          if(!updated) {
-            return res.status(500).send({ msg: err.message });
-          } else {
-            return res 
-              .status(200)
-              .send("Your account has been successfully verified");
-          }
+          return res.status(200).send("Your account has been successfully verified");
         }
       }
-      
     } catch (error) {
-      console.log(error)
+      console.error(error);
+      return res.status(500).send("Internal Server Error");
     }
-  },
+  }
+  ,
 
   getUser: (req, res) => {
     const {
