@@ -18,12 +18,12 @@ const productSchema = new mongoose.Schema({
   price: {
     type: Number,
     required: true
-  },
-  priceUnit: {
-    type: String,
-    required: true,
-    defaults: productPriceUnits.DOLLAR,
-  },
+  }
+  // priceUnit: {
+  //   type: String,
+  //   required: true,
+  //   defaults: productPriceUnits.DOLLAR,
+  // },
 
 })
 
@@ -48,14 +48,7 @@ module.exports = {
   findAllProducts: () => {
         return this.model.find({} );
       },
-  //     function(err, result) {
-  //       if (err) {
-  //         console.log(err);
-  //       } else {
-  //         this.json(result)
-  // //TODO COME BACK HERE LATER
-  //       }
-  //     }
+  
     
   deleteProduct: (id) => {
         return this.model.findByIdAndDelete(id).then(console.log("Item deleted"));
