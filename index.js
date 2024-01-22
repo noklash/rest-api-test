@@ -20,7 +20,7 @@ const AuthorizationRoutes = require("./authorization/routes");
 const UserRoutes = require("./users/routes");
 const ProductRoutes = require("./products/routes");
 const CartRoutes = require("./cart/routes")
-
+const uploadRoute = require("./upload/routes")
 // Sequelize model imports
 const UserModel = require("./common/models/User");
 const ProductModel = require("./common/models/Product");
@@ -47,6 +47,7 @@ ProductModel.initialise(mongoose);
     app.use("/user", UserRoutes);
     app.use("/product", ProductRoutes);
     app.use("/cart", CartRoutes);
+    app.use("/uploads", uploadRoute)
 
     app.listen(PORT, () => {
       console.log("Server Listening on PORT:", port);
