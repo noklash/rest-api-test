@@ -15,7 +15,7 @@ const { roles } = require("../config");
 
 router.get(
   "/",
-  [isAuthenticatedMiddleware.check],
+  // [isAuthenticatedMiddleware.check],
   ProductController.getAllProducts
 );
 
