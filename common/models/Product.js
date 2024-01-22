@@ -3,7 +3,7 @@ const { productPriceUnits } = require("../../config");
 const mongoose = require('mongoose');
 
 const productSchema = new mongoose.Schema({
-  name: {
+  title: {
     type: String,
     required: true
   },
@@ -11,10 +11,10 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  image: {
-    type: String,
-    required: true
-  },
+  // image: {
+  //   type: String,
+  //   required: true
+  // },
   price: {
     type: Number,
     required: true

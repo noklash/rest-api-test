@@ -87,20 +87,20 @@ module.exports = {
 
         setToken.save()
 
-        if (setToken) {
-          sendingMail({
-            from: "no-reply@example.com",
-          to: `${email}`,
-          subject: "Account Verification Link",
-          text: `Hello, ${username} Please verify your email by
-                clicking this link :
-                http://localhost:3000/verify-email/${user._id}/${setToken.token} `,
+        // if (setToken) {
+        //   sendingMail({
+        //     from: "no-reply@example.com",
+        //   to: `${email}`,
+        //   subject: "Account Verification Link",
+        //   text: `Hello, ${username} Please verify your email by
+        //         clicking this link :
+        //         http://localhost:3000/verify-email/${user._id}/${setToken.token} `,
 
-          });
+        //   });
 
-        }else {
-          return res.status(400).send("token not created")
-        }
+        // }else {
+        //   return res.status(400).send("token not created")
+        // }
           return res.status(201).send(user);
       } else {
         return res.status(409).send("Details are not correct");

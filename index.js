@@ -43,7 +43,7 @@ ProductModel.initialise(mongoose);
     console.log("Mongoose is  Initialised!!");
 
     // Attaching the Authentication and User Routes to the app.
-    app.use("/", AuthorizationRoutes);
+    app.use("/api/", AuthorizationRoutes);
     app.use("/user", UserRoutes);
     app.use("/product", ProductRoutes);
     app.use("/cart", CartRoutes);

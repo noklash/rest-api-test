@@ -21,15 +21,15 @@ router.get(
 
 router.get(
   "/:productId",
-  [isAuthenticatedMiddleware.check],
+  // [isAuthenticatedMiddleware.check],
   ProductController.getProductById
 );
 
 router.post(
-  "/",
+  "/add",
   [
-    isAuthenticatedMiddleware.check,
-    CheckPermissionMiddleware.has(roles.ADMIN),
+    // isAuthenticatedMiddleware.check,
+    // CheckPermissionMiddleware.has(roles.ADMIN),
     SchemaValidationMiddleware.verify(createProductPayload),
   ],
   ProductController.createProduct
@@ -38,8 +38,8 @@ router.post(
 router.patch(
   "/:productId",
   [
-    isAuthenticatedMiddleware.check,
-    CheckPermissionMiddleware.has(roles.ADMIN),
+    // isAuthenticatedMiddleware.check,
+    // CheckPermissionMiddleware.has(roles.ADMIN),
     SchemaValidationMiddleware.verify(updateProductPayload),
   ],
   ProductController.updateProduct
@@ -47,7 +47,7 @@ router.patch(
 
 router.delete(
   "/:productId",
-  [isAuthenticatedMiddleware.check, CheckPermissionMiddleware.has(roles.ADMIN)],
+  // [isAuthenticatedMiddleware.check, CheckPermissionMiddleware.has(roles.ADMIN)],
   ProductController.deleteProduct
 );
 

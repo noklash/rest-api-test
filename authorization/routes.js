@@ -18,7 +18,7 @@ router.post(
   AuthorizationController.register
 );
 
-router.get('/verify-email/:id/:token', verifyEmail)
+// router.get('/verify-email/:id/:token', verifyEmail)
 
 router.post(
   "/login",
