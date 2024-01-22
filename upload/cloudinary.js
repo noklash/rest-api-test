@@ -15,8 +15,8 @@ console.log(cloudinary.config());
 /////////////////////////
 // Uploads an image file
 /////////////////////////
-const uploadImage = async (req, res) => {
-  const { path } = req.body;
+const uploadImage = async (path) => {
+//   const { path } = req.body;
 
   // Use the uploaded file's name as the asset's public ID and
   // allow overwriting the asset with new versions
