@@ -8,9 +8,14 @@ module.exports = {
     description: {
       type: "string",
     },
-    // image: {
-    //   type: "string",
-    // },
+    
+    images: {
+      type: "array",
+      items: {
+        type: "string",
+      }
+    },
+
     price: {
       type: "number",
     }

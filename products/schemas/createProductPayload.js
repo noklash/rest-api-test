@@ -8,9 +8,13 @@ module.exports = {
     description: {
       type: "string",
     },
-    // image: {
-    //   type: "string",
-    // },
+    images: {
+      type: "array",
+      items: {
+        type: "string",
+      }
+
+    },
     price: {
       type: "number",
     },
@@ -19,6 +23,6 @@ module.exports = {
     //   enum: Object.values(productPriceUnits),
     // },
   },
-  required: ["title", "description",  "price"],
+  required: ["title", "description", "images", "price"],
   additionalProperties: false,
 };
