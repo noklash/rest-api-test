@@ -1,7 +1,10 @@
-// Require the cloudinary library
+require('dotenv').config();
+const express = require("express");
+const Router = express.Router();
+const multer = require("multer")
+
 const cloudinary = require('cloudinary').v2;
 
-// Return "https" URLs by setting secure: true
 cloudinary.config({
   secure: true,
   cloud_name: process.env.CLOUD_NAME,
@@ -9,37 +12,21 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_SECRET
 });
 
-// Log the configuration
-console.log(cloudinary.config());
+const opts = {
+  overwrite: true,
+  invalidate: true,
+  // resource_type: auto
+}
 
-/////////////////////////
-// Uploads an image file
-/////////////////////////
-const uploadImage = async (path) => {
-//   const { path } = req.body;
-
-  // Use the uploaded file's name as the asset's public ID and
-  // allow overwriting the asset with new versions
-  const options = {
-    use_filename: true,
-    unique_filename: false,
-    overwrite: true,
-    transformation: [{ width: 1000, height: 752, crop: "scale" }],
-  };
-
-  try {
-    // Upload the image
-    const result = await cloudinary.uploader.upload(path, options);
-    console.log(result);
-
-    // Send a response back to the client with the public_id or other information
-    res.status(200).json({ public_id: result.public_id, url: result.secure_url });
-  } catch (error) {
-    console.error(error);
-
-    // Send an error response back to the client
-    res.status(500).json({ error: "Failed to upload image to Cloudinary" });
-  }
-};
-
-module.exports = uploadImage;
+module.exports = (image) => { //image is base64 
+  return new Promise((resolve, reject) => {
+    cloudinary.uploader.upload(image, opts, (error, result) => {
+      if (result && result.secure_url){
+        console.log(result.secure_url);
+        return resolve(result.secure_url)
+      }
+      console.log(error.message);
+      return reject({ message: error.message});
+    })
+  })
+}

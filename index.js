@@ -2,6 +2,7 @@ const Express = require("express");
 const app = Express();
 const cors = require("cors");
 const morgan = require("morgan");
+require('dotenv').config()
 
 const mongoose = require('mongoose')
 
@@ -20,8 +21,8 @@ const AuthorizationRoutes = require("./authorization/routes");
 const UserRoutes = require("./users/routes");
 const ProductRoutes = require("./products/routes");
 const CartRoutes = require("./cart/routes")
-const uploadRoute = require("./upload/routes")
-// Sequelize model imports
+const uploadRoute = require("./upload/cloudinary")
+
 const UserModel = require("./common/models/User");
 const ProductModel = require("./common/models/Product");
 const CartModel = require("./common/models/Cart");
@@ -29,7 +30,14 @@ const CartModel = require("./common/models/Cart");
 app.use(morgan("tiny"));
 app.use(cors());
 
-app.use(Express.json());
+app.use(Express.json({ limit: '25mb' }));
+app.use(Express.urlencoded({ limit: '25mb' }))
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', "*");
+  next();
+});
+
+
 
 
 // Initialising the Model on sequelize
@@ -47,7 +55,13 @@ ProductModel.initialise(mongoose);
     app.use("/user", UserRoutes);
     app.use("/product", ProductRoutes);
     app.use("/cart", CartRoutes);
-    app.use("/uploads", uploadRoute)
+    // app.use("/upload", uploadRoute)
+
+    app.post("/upload", (req, res) => {
+      uploadRoute(req.body.image)
+      .then((url) => res.send(url))
+      .catch((err) => res.status(500).send(err));
+    });
 
     app.listen(PORT, () => {
       console.log("Server Listening on PORT:", port);
