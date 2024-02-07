@@ -9,7 +9,7 @@ const { port } = require("./config");
 const PORT = process.env.PORT || port;
 
 async function connectTodb(){
-  await mongoose.connect('mongodb+srv://noklash:Engineering2k@cluster0.urtdp8f.mongodb.net/?retryWrites=true&w=majority')
+  await mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log("CONNECTED TO DB"));
   
 }
